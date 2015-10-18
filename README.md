@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/azriel91/sl_math.svg?branch=master)](https://travis-ci.org/azriel91/sl_math) [![Build status](https://ci.appveyor.com/api/projects/status/dbpu2vkdf9iv4lrn/branch/master?svg=true)](https://ci.appveyor.com/project/azriel91/sl-math/branch/master) [![Build Status](https://webapi.biicode.com/v1/badges/azriel/azriel/sl_math/master)](https://www.biicode.com/azriel/sl_math)
+
 ## sl\_math
 
 Contains template classes for N-dimension Point objects.
