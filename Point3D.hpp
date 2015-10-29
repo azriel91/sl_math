@@ -21,10 +21,10 @@
 #ifndef __SL_MATH__POINT3D_HPP
 #define __SL_MATH__POINT3D_HPP
 
+#include "Point.hpp" // must include outside of the namespace
+
 namespace sl {
 namespace math {
-
-#include "Point.hpp"
 
 template<class T>
 class Point3D : public sl::math::Point<T, 3> {

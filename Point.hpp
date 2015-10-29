@@ -21,6 +21,8 @@
 #ifndef __SL_MATH__POINT_HPP
 #define __SL_MATH__POINT_HPP
 
+#include <cstring> // for memcpy
+
 namespace sl {
 namespace math {
 
