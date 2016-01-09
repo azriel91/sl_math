@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/azriel91/sl_math.svg?branch=master)](https://travis-ci.org/azriel91/sl_math) [![Build status](https://ci.appveyor.com/api/projects/status/dbpu2vkdf9iv4lrn/branch/master?svg=true)](https://ci.appveyor.com/project/azriel91/sl-math/branch/master) [![Build Status](https://webapi.biicode.com/v1/badges/azriel/azriel/sl_math/master)](https://www.biicode.com/azriel/sl_math)
+[![Build Status](https://travis-ci.org/azriel91/sl_math.svg?branch=master)](https://travis-ci.org/azriel91/sl_math) [![Build status](https://ci.appveyor.com/api/projects/status/dbpu2vkdf9iv4lrn/branch/master?svg=true)](https://ci.appveyor.com/project/azriel91/sl-math/branch/master)
 
 ## sl\_math
 
@@ -6,37 +6,23 @@ Contains template classes for N-dimension Point objects.
 
 ## Development
 
-This is built using [biicode](https://www.biicode.com/).
+This is built using [conan](https://www.conan.io/).
 
 ### Requirements
 
-* [biicode](https://www.biicode.com/downloads)
-* [CMake](http://www.cmake.org/install/)
-* [g++ 4.8](https://gcc.gnu.org/)
+* [conan](https://www.conan.io/downloads)
+* [CMake 3.4](https://cmake.org/download/)
+* [g++ 5.2](https://gcc.gnu.org/) or
+* [clang 3.6](http://clang.llvm.org/) - _note: does not work with 3.7_
 
 ### Building
-
-#### Linux
 
 After cloning, in the repository directory run the following to build the block:
 
 ```bash
-git submodule update --init        # initialize git submodules
-bii-support/linux/build/shared.sh  # builds shared libraries
+conan install --build=missing
+conan build
 ```
-
-The test executable will be output as `bin/azriel_sl_math_test_main`.
-
-#### Windows
-
-After cloning, in the repository directory run the following to build the block:
-
-```bat
-git submodule update --init           :: initialize git submodules
-bii-support\windows\build\shared.bat  :: builds shared libraries
-```
-
-The test executable will be output as `bin\azriel_sl_math_test_main.exe`.
 
 ## License
 

@@ -18,8 +18,8 @@
 
 =============================================================================*/
 
-#include <google/gtest/gtest.h>
-#include <google/gmock/gmock.h>
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include "../Point3D.hpp"
 

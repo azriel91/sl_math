@@ -1,15 +1,11 @@
-project(${BII_BLOCK_NAME})
+project(sl_math)
+cmake_minimum_required(VERSION 3.4)
 
-include(azriel/sl_cmake/slBlockFunctions)
-include(biicode/cmake/tools)
+include(conanbuildinfo.cmake)
+conan_basic_setup()
 
-# Bii variables
-set(BII_LIB_SRC )
-set(BII_test_main_SRC test/main.cpp)
+include(slBundleFunctions)
 
-# Actually create targets: executables and libraries.
-ADD_BII_TARGETS()
-
-ACTIVATE_CPP11(${BII_test_main_TARGET})
-
-SL_INCLUDE_TESTS(${BII_test_main_TARGET})
+# This must be called from the project root's CMakeLists.txt, otherwise the 'test' target doesn't get created
+enable_testing()
+sl_include_test_dir()

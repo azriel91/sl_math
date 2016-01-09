@@ -6,32 +6,42 @@ compiler:
 - clang
 
 before_install:
-- git checkout $TRAVIS_BRANCH
-
-- if [ $(bii-support/travis/git/is_last_commit_travis.sh) = "true" ] ; then exit 0 ; fi
-- bii-support/travis/git/configure.sh
+# apt update
+- sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+- sudo add-apt-repository ppa:h-rayflood/llvm-upper -y # needed for clang 3.6
+- sudo apt-get update -qq
 
 install:
-- bii-support/travis/install/all-headless.sh
+# gcc 5.2
+- if [ "$CXX" = "g++" ]; then
+    sudo apt-get install -qq gcc-5 g++-5;
+    export CXX="g++" CC="gcc" CXX_VERSION=5.2 CC_VERSION=5.2;
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 90;
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90;
+  fi
 
-- export TRAVIS_CXX=$CXX
+# clang 3.6
+- if [ "$CXX" = "clang++" ]; then
+    sudo apt-get install -qq clang-3.6;
+    export CXX="clang++" CC="clang" CXX_VERSION=3.6 CC_VERSION=3.6;
+    sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.6 90;
+    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-3.6 90;
+    sudo update-alternatives --install /usr/bin/clang cc /usr/bin/clang-3.6 90;
+    sudo update-alternatives --install /usr/bin/clang++ c++ /usr/bin/clang++-3.6 90;
+  fi
+
+# cmake 3.4
+- wget --no-check-certificate https://cmake.org/files/v3.4/cmake-3.4.1-Linux-x86_64.sh -O /tmp/cmake-3.4.1-Linux-x86_64.sh
+- chmod +x /tmp/cmake-3.4.1-Linux-x86_64.sh
+- sudo mkdir /usr/lib/cmake
+- sudo /tmp/cmake-3.4.1-Linux-x86_64.sh --skip-license --include-subdir --prefix=/usr/lib/cmake
+- sudo update-alternatives --install /usr/bin/cmake cmake /usr/lib/cmake/cmake-3.4.1-Linux-x86_64/bin/cmake 100
+- export PATH=/usr/lib/cmake/cmake-3.4.1-Linux-x86_64/bin:$PATH
+
+# conan
+- sudo pip install conan
 
 script:
-- bii-support/linux/build/default.sh
-
-after_success:
-- bii-support/travis/publish/biicode.sh
-
-env:
-  global:
-  - USER_EMAIL=azriel91@gmail.com
-  - USER_NAME="azriel"
-  - BLOCK_NAME=sl_math
-  - BII_USER=azriel
-  # Secure variables:
-  # - BII_PASSWORD
-  # - GITHUB_TOKEN
-  - secure: "iNUST2sr1Ff8lB59hgKHcDTHThW74StQYPtiMHaTNYHhMcBIfUbNwTEyMcSv3J2Yk6sNopAu5TzRIoG+avyKi1L893DA1woMua6ZlWIu44w2beHMBQ62Oy/7+F9n2npOlPvIpK3W0lhWfTE4xvsfgta6g0n+EO1WVO1y9sSBiPhJKeGKJKelVPQFO7cG5l2nyC59hZdqpv5saE8o2uPP1YFMC9qyMDTq3MU0/qgHs/SpwR5Ig9qnB86qEpf4rPbTwcia+mbCPDE0bLGDCcsKakxOaW7AaMyiodj0vMDL9ROs5j3V2egWdZlEtOETApZwmdNtwVWYjJ9iRzRk3yKU9ejMwbIcTB163V1xRThTCGD8Z/PZe76pEMGT1oFaj1XmGdarNyK6bnr2fUtqeD/3roe4XkbR6phVMY8V+/eP9GP+zTwl9FO7axVOaQJ/2ispe9YUfJiEZd21h1SnDTIEtdzj7n+ZP0y85aMrfoUmon/Q8HGPC7yPyr+rS683nmnJcHf3oYfO4IF2yiUKOvMJdsM4J6odpX/06dQvPsHWoXxUo71E75MmPjLrbnIgH31zTZRk73AsTdaprBExZXPeGrZoU+uAfP+XZabsDmMmXTnZww3vMMN56738Z/ROGxvoGnPiBHQnM/MZ7Ngu3z+CM8CQa8zPkLePdpwSyW9CehI="
-  matrix:
-  - BUILD_SHARED_LIBS=OFF
-  - BUILD_SHARED_LIBS=ON
+- conan install --build=missing -s compiler=$CC -s compiler.version=$CC_VERSION
+- conan build
+- build/bin/sl_math_test_main

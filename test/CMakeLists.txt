@@ -1,7 +1,5 @@
-target_include_directories(${BII_test_main_TARGET} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+set(test_main_TARGET ${PROJECT_NAME}_test_main)
+add_executable(${test_main_TARGET} ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp)
+target_link_libraries(${test_main_TARGET} ${CONAN_LIBS})
 
-# Run the test
-enable_testing()
-
-add_test(NAME ${BII_test_main_TARGET}
-         COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${BII_test_main_TARGET})
+sl_include_tests(${test_main_TARGET})
